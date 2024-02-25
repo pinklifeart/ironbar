@@ -155,32 +155,143 @@ pub struct MarginConfig {
     pub top: i32,
 }
 
+/// The following is a list of all top-level bar config options.
+///
+/// These options can either be written at the very top object of your config,
+/// or within an object in the [monitors](#monitors) config,
+/// depending on your [use-case](#2-pick-your-use-case).
+///
 #[derive(Debug, Deserialize, Clone)]
 pub struct BarConfig {
-    #[serde(default)]
-    pub position: BarPosition,
-    #[serde(default = "default_true")]
-    pub anchor_to_edges: bool,
-    #[serde(default = "default_bar_height")]
-    pub height: i32,
-    #[serde(default)]
-    pub margin: MarginConfig,
+    /// A unique identifier for the bar, used for controlling it over IPC.
+    /// If not set, uses a generated integer suffix.
+    ///
+    /// **Default**: `bar-n`
     pub name: Option<String>,
 
+    /// The bar's position on screen.
+    ///
+    /// **Valid options**: `top`, `bottom`, `left`, `right`
+    /// <br>
+    /// **Default**: `bottom`
+    #[serde(default)]
+    pub position: BarPosition,
+
+    /// Whether to anchor the bar to the edges of the screen.
+    /// Setting to false centers the bar.
+    ///
+    /// **Default**: `true`
+    #[serde(default = "default_true")]
+    pub anchor_to_edges: bool,
+
+    /// The bar's height in pixels.
+    ///
+    /// Note that GTK treats this as a target minimum,
+    /// and if content inside the bar is over this,
+    /// it will automatically expand to fit.
+    ///
+    /// **Default**: `42`
+    #[serde(default = "default_bar_height")]
+    pub height: i32,
+
+    /// The margin to use on each side of the bar, in pixels.
+    /// Object which takes `top`, `bottom`, `left` and `right` keys.
+    ///
+    /// **Default**: `0` on all sides.
+    ///
+    /// # Example
+    ///
+    /// The following would set a 10px margin around each edge.
+    ///
+    /// ```corn
+    /// {
+    ///     margin.top = 10
+    ///     margin.bottom = 10
+    ///     margin.left = 10
+    ///     margin.right = 10
+    /// }
+    /// ```
+    #[serde(default)]
+    pub margin: MarginConfig,
+    #[serde(default = "default_popup_gap")]
+
+    /// The size of the gap in pixels
+    /// between the bar and the popup window.
+    ///
+    /// **Default**: `5`
+    pub popup_gap: i32,
+
+    /// Whether the bar should be hidden when Ironbar starts.
+    ///
+    /// **Default**: `false`, unless `autohide` is set.
     #[serde(default)]
     pub start_hidden: Option<bool>,
+
+    /// The duration in milliseconds before the bar is hidden after the cursor leaves.
+    /// Leave unset to disable auto-hide behaviour.
+    ///
+    /// **Default**: `null`
     #[serde(default)]
     pub autohide: Option<u64>,
 
-    /// GTK icon theme to use.
+    /// The name of the GTK icon theme to use.
+    /// Leave unset to use the default Adwaita theme.
+    ///
+    /// **Default**: `null`
     pub icon_theme: Option<String>,
 
+    /// A map of [ironvar](ironvar) keys and values
+    /// to initialize Ironbar with on startup.
+    ///
+    /// **Default**: `{}`
+    ///
+    /// # Example
+    ///
+    /// The following initializes an ironvar called `foo` set to `bar` on startup:
+    ///
+    /// ```corn
+    /// { ironvar_defaults.foo = "bar" }
+    /// ```
+    ///
+    /// The variable can then be immediately fetched without needing to be manually set:
+    ///
+    /// ```sh
+    /// $ ironbar get foo
+    /// ok
+    /// bar
+    /// ```
+    pub ironvar_defaults: Option<HashMap<Box<str>, String>>,
+
+    /// An array of modules to append to the start of the bar.
+    /// Depending on the orientation, this is either the top of the left edge.
+    ///
+    /// **Default**: `[]`
     pub start: Option<Vec<ModuleConfig>>,
+
+    /// An array of modules to append to the center of the bar.
+    ///
+    /// **Default**: `[]`
     pub center: Option<Vec<ModuleConfig>>,
+
+    /// An array of modules to append to the end of the bar.
+    /// Depending on the orientation, this is either the bottom or right edge.
+    ///
+    /// **Default**: `[]`
     pub end: Option<Vec<ModuleConfig>>,
 
-    #[serde(default = "default_popup_gap")]
-    pub popup_gap: i32,
+    /// A map of monitor names to configs.
+    ///
+    /// The config values can be either:
+    ///
+    /// - a single object, which denotes a single bar for that monitor,
+    /// - an array of multiple objects, which denotes multiple for that monitor.
+    ///
+    /// Each object is one of [Config](#config).
+    ///
+    /// > [!NOTE]
+    /// > This option can only be set at the top-level.
+    /// > Setting this within a bar config has no effect.
+    pub monitors: Option<HashMap<String, MonitorConfig>>,
 }
 
 impl Default for BarConfig {

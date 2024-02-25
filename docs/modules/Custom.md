@@ -18,10 +18,7 @@ or [label](label) if you only need a single text label.
 This module can be quite fiddly to configure as you effectively have to build a tree of widgets by hand.
 It is well worth looking at the examples.
 
-| Name    | Type                   | Default    | Description                              |
-|---------|------------------------|------------|------------------------------------------|
-| `bar`   | `(Module or Widget)[]` | `[]`    | Modules and widgets to add to the bar.   |
-| `popup` | `(Module or Widget)[]`               | `null`     | Modules and widgets to add to the popup. |
+<% modules::custom::CustomModule %>
 
 ### `Widget`
 
@@ -31,11 +28,7 @@ You can think of these like HTML elements and their attributes.
 Every widget has the following options available; `type` is mandatory. 
 You can also add common [module-level options](https://github.com/JakeStanger/ironbar/wiki/configuration-guide#32-module-level-options) on a widget.
 
-| Name    | Type                                                                          | Default | Description                   |
-|---------|-------------------------------------------------------------------------------|---------|-------------------------------|
-| `type`  | `'box'` or `'label'` or `'button'` or `'image'` or `'slider'` or `'progress'` | `null`  | Type of GTK widget to create. |
-| `name`  | `string`                                                                      | `null`  | Widget name.                  |
-| `class` | `string`                                                                      | `null`  | Widget class name.            |
+<% modules::custom::Widget { table = true } %>
 
 #### Box
 
@@ -43,10 +36,7 @@ A container to place nested widgets inside.
 
 > Type: `box`
 
-| Name          | Type                                                       | Default        | Description                                                       |
-|---------------|------------------------------------------------------------|----------------|-------------------------------------------------------------------|
-| `orientation` | `'horizontal'` or `'vertical'` (shorthand: `'h'` or `'v'`) | `'horizontal'` | Whether child widgets should be horizontally or vertically added. |
-| `widgets`     | `(Module or Widget)[]`                                     | `[]`           | List of modules/widgets to add to this box.                       |
+<% modules::custom::r#box::BoxWidget { depth = 3 } %>
 
 #### Label
 
@@ -54,10 +44,7 @@ A text label. Pango markup is supported.
 
 > Type `label`
 
-| Name    | Type                                            | Default | Description                                                         |
-|---------|-------------------------------------------------|---------|---------------------------------------------------------------------|
-| `label` | [Dynamic String](dynamic-values#dynamic-string) | `null`  | Widget text label. Pango markup and embedded scripts are supported. |
-| `orientation` | `'horizontal'` or `'vertical'` (shorthand: `'h'` or `'v'`) | `'horizontal'` | Orientation of the label.                                                                                                      |
+<% modules::custom::label::LabelWidget { depth = 3 } %>
 
 #### Button
 
@@ -65,12 +52,7 @@ A clickable button, which can run a command when clicked.
 
 > Type `button`
 
-| Name       | Type                                            | Default | Description                                                                                      |
-|------------|-------------------------------------------------|---------|--------------------------------------------------------------------------------------------------|
-| `label`    | [Dynamic String](dynamic-values#dynamic-string) | `null`  | Widget text label. Pango markup and embedded scripts are supported. Ignored if `widgets` is set. |
-| `widgets`  | `(Module or Widget)[]`                          | `[]`    | List of modules/widgets to add to this button.                                                   |
-| `on_click` | `string [command]`                              | `null`  | Command to execute. More on this [below](#commands).                                             |
-| `orientation` | `'horizontal'` or `'vertical'` (shorthand: `'h'` or `'v'`) | `'horizontal'` | Orientation of the button.                                                                                                      |
+<% modules::custom::button::ButtonWidget { depth = 3 } %>
 
 #### Image
 
@@ -78,30 +60,13 @@ An image or icon from disk or http.
 
 > Type `image`
 
-| Name   | Type                                                                | Default | Description                                           |
-|--------|---------------------------------------------------------------------|---------|-------------------------------------------------------|
-| `src`  | [image](images) via [Dynamic String](dynamic-values#dynamic-string) | `null`  | Image source.                                         |
-| `size` | `integer`                                                           | `null`  | Width/height of the image. Aspect ratio is preserved. |
+<% modules::custom::image::ImageWidget { depth = 3 } %>
 
 #### Slider
 
 A draggable slider.
 
 > Type: `slider`
-
-Note that `on_change` will provide the **floating point** value as an argument. 
-If your input program requires an integer, you will need to round it.
-
-| Name          | Type                                                       | Default        | Description                                                                                                                     |
-|---------------|------------------------------------------------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------|
-| `orientation` | `'horizontal'` or `'vertical'` (shorthand: `'h'` or `'v'`) | `'horizontal'` | Orientation of the slider.                                                                                                      |
-| `value`       | `Script`                                                   | `null`         | Script to run to get the slider value. Output must be a valid number.                                                           | 
-| `on_change`   | `string [command]`                                         | `null`         | Command to execute when the slider changes. More on this [below](#commands).                                                    | 
-| `min`         | `float`                                                    | `0`            | Minimum slider value.                                                                                                           | 
-| `max`         | `float`                                                    | `100`          | Maximum slider value.                                                                                                           | 
-| `step`        | `float`                                                    | -              | The increment to change when scrolling with the mouse wheel. If left blank, will use the default determined by the environment. | 
-| `length`      | `integer`                                                  | `null`         | Slider length. GTK will automatically size if left unset.                                                                       |
-| `show_label`  | `boolean`                                                  | `true`         | Whether to show the value label above the slider.                                                                               |
 
 The example slider widget below shows a volume control for MPC, 
 which updates the server when changed, and polls the server for volume changes to keep the slider in sync.
@@ -121,20 +86,13 @@ $slider = {
 }
 ```
 
+<% modules::custom::slider::SliderWidget { depth = 3 } %>
+
 #### Progress
 
 A progress bar.
 
 > Type: `progress`
-
-Note that `value` expects a numeric value **between 0-`max`** as output.
-
-| Name          | Type                                                       | Default      | Description                                                                     |
-|---------------|------------------------------------------------------------|--------------|---------------------------------------------------------------------------------|
-| `orientation` | `'horizontal'` or `'vertical'` (shorthand: `'h'` or `'v'`) | `horizontal` | Orientation of the progress bar.                                                |
-| `value`       | `Script`                                                   | `null`       | Script to run to get the progress bar value. Output must be a valid percentage. |
-| `max`         | `float`                                                    | `100`        | Maximum progress bar value.                                                     | 
-| `length`      | `integer`                                                  | `null`       | Slider length. GTK will automatically size if left unset.                       |
 
 The example below shows progress for the current playing song in MPD, 
 and displays the elapsed/length timestamps as a label above:
@@ -152,6 +110,8 @@ $progress = {
     ] 
 }
 ```
+
+<% modules::custom::progress::ProgressWidget { depth = 3 } %>
 
 ### Label Attributes
 

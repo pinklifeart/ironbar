@@ -10,8 +10,11 @@ use tokio::sync::mpsc;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct LabelModule {
+    /// The text to show on the label.
+    /// This is a [Dynamic String](dynamic-values#dynamic-string).
     label: String,
 
+    /// See [common options](module-level-options#common-options).
     #[serde(flatten)]
     pub common: Option<CommonConfig>,
 }

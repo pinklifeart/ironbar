@@ -10,9 +10,23 @@ use super::{CustomWidget, CustomWidgetContext};
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct LabelWidget {
+    /// Widget name.
     name: Option<String>,
+
+    /// Widget class name.
     class: Option<String>,
+
+    /// Widget text label. Pango markup and embedded scripts are supported.
+    ///
+    /// This is a [Dynamic String](dynamic-values#dynamic-string).
     label: String,
+
+    /// Orientation of the label.
+    /// Setting to vertical will rotate text 90 degrees.
+    ///
+    /// **Valid options**: `horizontal`, `vertical`, `h`, `v`
+    /// <br />
+    /// **Default option**: `horizontal`
     #[serde(default)]
     orientation: ModuleOrientation,
 }
@@ -24,7 +38,6 @@ impl CustomWidget for LabelWidget {
         let label = build!(self, Self::Widget);
 
         label.set_angle(self.orientation.to_angle());
-
         label.set_use_markup(true);
 
         {

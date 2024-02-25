@@ -23,19 +23,35 @@ pub struct LauncherModule {
     /// List of app IDs (or classes) to always show regardless of open state,
     /// in the order specified.
     favorites: Option<Vec<String>>,
+
     /// Whether to show application names on the bar.
+    ///
+    /// **Default**: `false`
     #[serde(default = "crate::config::default_false")]
     show_names: bool,
+
     /// Whether to show application icons on the bar.
+    ///
+    /// **Default**: `true`
     #[serde(default = "crate::config::default_true")]
     show_icons: bool,
 
+    /// Size in pixels to render icon at (image icons only).
+    ///
+    /// **Default**: `32`
     #[serde(default = "default_icon_size")]
     icon_size: i32,
 
+    /// Whether items should be added from right-to-left
+    /// instead of left-to-right.
+    ///
+    /// This includes favourites.
+    ///
+    /// **Default**: `false`
     #[serde(default = "crate::config::default_false")]
     reversed: bool,
 
+    /// See [common options](module-level-options#common-options).
     #[serde(flatten)]
     pub common: Option<CommonConfig>,
 }

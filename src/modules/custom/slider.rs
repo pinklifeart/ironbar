@@ -17,18 +17,55 @@ use super::{CustomWidget, CustomWidgetContext, ExecEvent};
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct SliderWidget {
+    /// Widget name.
     name: Option<String>,
+
+    /// Widget class name.
     class: Option<String>,
+
+    /// Orientation of the slider.
+    ///
+    /// **Valid options**: `horizontal`, `vertical`, `h`, `v`
+    /// <br />
+    /// **Default option**: `horizontal`
     #[serde(default)]
     orientation: ModuleOrientation,
+
+    /// Script to run to get the slider value.
+    /// Output must be a valid number.
     value: Option<ScriptInput>,
+
+    /// Command to execute when the slider changes.
+    /// More on this [below](#slider).
+    ///
+    /// Note that this will provide the floating point value as an argument.
+    /// If your input program requires an integer, you will need to round it.
     on_change: Option<String>,
+
+    /// Minimum slider value.
+    ///
+    /// **Default**: `0`
     #[serde(default = "default_min")]
     min: f64,
+
+    /// Maximum slider value.
+    ///
+    /// **Default**: `100`
     #[serde(default = "default_max")]
     max: f64,
+
+    /// If the increment to change when scrolling with the mousewheel.
+    /// If left blank, GTK will use the default value,
+    /// determined by the current environment.
     step: Option<f64>,
+
+    /// The slider length.
+    /// GTK will automatically determine the size if left blank.
     length: Option<i32>,
+
+    /// Whether to show the value label above the slider.
+    ///
+    /// **Default**: `true`
     #[serde(default = "crate::config::default_true")]
     show_label: bool,
 }

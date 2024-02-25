@@ -29,11 +29,12 @@ use tracing::{debug, error};
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct CustomModule {
-    /// Widgets to add to the bar container
+    /// Modules and widgets to add to the bar container.
     bar: Vec<WidgetConfig>,
-    /// Widgets to add to the popup container
+    /// Modules and widgets to add to the popup container.
     popup: Option<Vec<WidgetConfig>>,
 
+    /// See [common options](module-level-options#common-options).
     #[serde(flatten)]
     pub common: Option<CommonConfig>,
 }
@@ -56,11 +57,17 @@ pub enum WidgetOrModule {
 #[derive(Debug, Deserialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Widget {
+    /// A container to place nested widgets inside.
     Box(BoxWidget),
+    /// A text label. Pango markup is supported.
     Label(LabelWidget),
+    /// A clickable button, which can run a command when clicked.
     Button(ButtonWidget),
+    /// An image or icon from disk or http.
     Image(ImageWidget),
+    /// A draggable slider.
     Slider(SliderWidget),
+    /// A progress bar.
     Progress(ProgressWidget),
 }
 

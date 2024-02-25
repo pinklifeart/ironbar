@@ -7,9 +7,7 @@ For more advanced use-cases, use [custom](custom).
 
 > Type: `label`
 
-| Name    | Type                                            | Default | Description            |
-|---------|-------------------------------------------------|---------|------------------------|
-| `label` | [Dynamic String](dynamic-values#dynamic-string) | `null`  | Text to show on label. |
+<% modules::label::LabelModule %>
 
 <details>
 <summary>JSON</summary>

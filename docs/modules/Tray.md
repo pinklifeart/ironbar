@@ -6,11 +6,7 @@ Displays a fully interactive icon tray using the KDE `libappindicator` protocol.
 
 > Type: `tray`
 
-| Name                 | Type      | Default                                                         | Description                                                                                                                                                         |
-|----------------------|-----------|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `direction`          | `string`  | `left_to_right` if bar is horizontal, `top_to_bottom` otherwise | Direction to display the tray items. Possible values: `top_to_bottom`, `bottom_to_top`, `left_to_right`, `right_to_left`                                            |
-| `icon_size`          | `integer` | `16`                                                            | Size in pixels to display tray icons as.                                                                                                                            |
-| `prefer_theme_icons` | `bool`    | `true`                                                          | Requests that icons from the theme be used over the item-provided item. Most items only provide one or the other so this will have no effect in most circumstances. |
+<% modules::tray::TrayModule %>
 
 <details>
 <summary>JSON</summary>

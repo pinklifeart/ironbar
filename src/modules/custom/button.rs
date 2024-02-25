@@ -11,13 +11,33 @@ use super::{CustomWidget, CustomWidgetContext, ExecEvent, WidgetConfig};
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct ButtonWidget {
+    /// Widget name.
     name: Option<String>,
+
+    /// Widget class name.
     class: Option<String>,
+
+    /// Widget text label. Pango markup and embedded scripts are supported.
+    ///
+    /// This is a shorthand for adding a label widget to the button.
+    /// Ignored if `widgets` is set.
+    ///
+    /// This is a [Dynamic String](dynamic-values#dynamic-string).
     label: Option<String>,
+
+    /// Command to execute. More on this [below](#commands).
     on_click: Option<String>,
-    widgets: Option<Vec<WidgetConfig>>,
+
+    /// Orientation of the button.
+    ///
+    /// **Valid options**: `horizontal`, `vertical`, `h`, `v`
+    /// <br />
+    /// **Default option**: `horizontal`
     #[serde(default)]
     orientation: ModuleOrientation,
+
+    /// Modules and widgets to add to this box.
+    widgets: Option<Vec<WidgetConfig>>,
 }
 
 impl CustomWidget for ButtonWidget {

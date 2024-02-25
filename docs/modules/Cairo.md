@@ -14,12 +14,7 @@ Scripts are automatically hot-reloaded.
 
 > Type: `cairo`
 
-| Name               | Type      | Default | Description                                        |
-|--------------------|-----------|---------|----------------------------------------------------|
-| `path`             | `string`  | `null`  | The path to the Lua script to load.                |
-| `frequency`        | `float`   | `200`   | The number of milliseconds between each draw call. |
-| `width`            | `integer` | `42`    | The canvas width in pixels.                        |
-| `height`           | `integer` | `42`    | The canvas height in pixels.                       |
+<% modules::cairo::CairoModule %>
 
 <details>
 <summary>JSON</summary>

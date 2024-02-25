@@ -24,8 +24,11 @@ pub struct FocusedModule {
     #[serde(default = "default_icon_size")]
     icon_size: i32,
 
+    // -- common --
+    /// See [truncate options](module-level-options#truncate-mode).
     truncate: Option<TruncateMode>,
 
+    /// See [common options](module-level-options#common-options).
     #[serde(flatten)]
     pub common: Option<CommonConfig>,
 }
