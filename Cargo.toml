@@ -142,8 +142,9 @@ cairo-rs = { version = "0.18.5", optional = true, features = ["png"] }
 chrono = { version = "0.4.40", optional = true, default-features = false, features = ["clock", "unstable-locales"] }
 
 # keyboard
-colpetto = { version = "0.5.1", features = ["tokio", "tracing"], optional = true }
+colpetto = { version = "0.1.5", features = ["tokio", "tracing"], optional = true }
 evdev-rs = { version = "0.6.1", optional = true }
+libc = { version = "0.2.170", optional = true }
 
 # music
 mpd-utils = { version = "0.2.1", optional = true }
